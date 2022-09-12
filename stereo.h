@@ -29,7 +29,7 @@ namespace Stereo {
         float Frequency;
         int Volume;
 
-    public: //methods to get and set different values
+    public: //method declarations to get and set different values
         void setPower();
         int getPower();
         void setManufacturer();
@@ -38,22 +38,20 @@ namespace Stereo {
         string getModel();
         string getSerialNumber();
         void setSerialNumber();
+        void setWattage();
         int getWattage();
-        void setFrequency(float freq);
+        void setFrequency(StereoReceiver& receiver);
         float getFrequency();
         int getChannel();
         void setVolume();
+        void setChannel();
         int getVolume();
         string getColor();
+        void setColor();
         string getBand();
         void setBand();
         void createReceiver();
         StereoReceiver();
-        //parameterized constructor
-        StereoReceiver(string Manufacturer, string Model, string SerialNumber, int Wattage, int NumberofChannels,
-                       string Color);
-
-
     };
 }
 #endif //M01_PROGRAMMING_ASSIGNMENT___PART_2_STEREO_H
