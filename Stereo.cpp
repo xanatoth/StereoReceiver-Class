@@ -1,7 +1,7 @@
 /*
  * Program Name: stereo.cpp
  * Author:David Bommarito
- * Last Updated: 9/9/2022
+ * Last Updated: 9/17/2022
  * Purpose: Stereo Receiver class file with definitions
  */
 
@@ -11,238 +11,252 @@
 #include <iostream>
 using namespace std;
 using namespace Stereo;
-        void StereoReceiver::setPower() {
-            int input;
-            cout << "Let's turn the receiver on." << endl;
-            cout << "Stereo Receiver must be turned on before we can continue!" << endl;
-            cout << "1 for On\n0 for off:\n ";
-            cin >> input;
-            try{
-                if(!cin.good()){
-                    cin.clear();
-                    cin.ignore(1000,'\n');
-                    throw invalid_argument("Input must be 1 or 0");
-                }
-                if(input<0 || input > 1){
-                    throw invalid_argument("Input must be 1 or 0");
-                }
-                if(input == 1 || input == 0){
-                    Power = input;
-                }
-            }
-            catch(invalid_argument textException){
-                cout << textException.what() << endl;
-                cout << "1 for On\n0 for off:\n ";
-                cin >> input;
-                setPower();
-            }
 
-        }
-        int StereoReceiver:: getPower() {return Power;}
-        string StereoReceiver::getManufacturer() {return Manufacturer;}
-        string StereoReceiver:: getModel() {return Model;}
-        string StereoReceiver::getSerialNumber() {return SerialNumber;}
-        int StereoReceiver :: getWattage() {return Wattage;}
-        void StereoReceiver::setFrequency(StereoReceiver& receiver) {
-            float input;
-            if(receiver.getBand().compare("AM") == 0){
-                cout << "Enter frequency between 540-1700 kHZ" << endl;
-                cin >> input;
-            }
-            if (receiver.getBand().compare("FM") == 0){
-                cout << "Enter frequency between 88-107" << endl;
-                cin >> input;
-            }
-            try{
-                if(!cin.good()){
-                    cin.clear();
-                    cin.ignore(1000,'\n');
-                    throw invalid_argument("Invalid Input");
-                }
-                if(input < 540 || input > 1700 || input < 88 || input > 108 )
-                    throw invalid_argument("Invalid Input");
-                Frequency =input;
-            }
-            catch(invalid_argument textExpression){
-                textExpression.what();
-                receiver.setFrequency(receiver);
-            }
-        }
-        float StereoReceiver :: getFrequency() {return Frequency;}
-        int StereoReceiver:: getChannel() {return Channel;}
-        void StereoReceiver :: setVolume() {
-            int input;
-            cout << "Set volume between 1 and 10" <<endl;
-            cin >> input;
-            try{
-                if(!cin.good()){
-                    cin.clear();
-                    cin.ignore(1000,'\n');
-                    throw invalid_argument("Volume must be an integer");
-                }
-                if(input > 10 || input < 0){
-                    throw invalid_argument("Invalid volume setting!");
-                }
-                Volume = input;
-            }
-            catch (invalid_argument txtException){
-                cout << txtException.what() << endl;
-                cout << "Reenter volume";
-                cin >> input;
-                setVolume();
-            }
-        }
-        void StereoReceiver::setWattage(){
-            int input;
-            cout << "Enter wattage between 1-1000: ";
-            cin >> input;
-            try{
-                if(input < 1 || input > 1000){
-                    throw invalid_argument("Wattage must be between 1-1000");
-                }
-            }
-            catch (invalid_argument textException){
-                cout << textException.what() << endl;
-                setWattage();
-            }
-        }
-        int StereoReceiver :: getVolume() {
-            return Volume;
-        }
-        string StereoReceiver :: getColor() {
-            return Color;
-        }
-        string StereoReceiver :: getBand() {
-            return Band;
-        }
-        void StereoReceiver :: setBand() {
-            while (Power == 0){
-                cout << "Cannot set band while " << Manufacturer << " " << Model << " is turned off." << endl;
-                setPower();
-            }
-            string input;
-            cout << "Enter band (AM or FM): " <<endl;
-            cin >> input;
-            try{
-                if(tolower(input.compare("AM") || tolower(input.compare("FM"))) == 1){
-                    Band = input;
-                }
-                else{
-                    throw invalid_argument("Band must be either AM or FM");
-                }
-            }
-            catch(invalid_argument textException){
-                textException.what();
-                setBand();
-            }
+string StereoReceiver::getBand(){return Band;}
+int StereoReceiver::getChannel(){return Channel;}
+string StereoReceiver::getColor(){return Color;}
+double StereoReceiver::getFrequency(){return Frequency;}
+string StereoReceiver::getManufacturer(){return Manufacturer;}
+string StereoReceiver::getModel(){return Model;}
+bool StereoReceiver::getPower(){return Power;}
+string StereoReceiver::getSerialNumber(){return SerialNumber;}
+int StereoReceiver::getVolume(){return Volume;}
+double StereoReceiver::getWattage(){return Wattage;}
 
-        }
-        void StereoReceiver:: setChannel(){
-            int input;
-            cout << "Enter number of channels that your " << Manufacturer << " " << Model << " supports (1-100): " << endl;
-            cin >> input;
-            try{
-                if(!cin.good()){
-                    throw invalid_argument("Invalid input");
-                }
-                if(input < 0 || input > 100){
-                    throw invalid_argument("Number of channels must be between 1-100");
-                }
-                Channel = input;
-            }
-            catch(invalid_argument textException){
-                textException.what();
-                setChannel();
-            }
-        }
-        void StereoReceiver::setColor() {
-            string input;
-            cout << "Enter color of your " << Manufacturer << " " << Model << ":" <<endl;
-            cin >> input;
-            try{
-                if(input.compare("")==0){
-                    throw invalid_argument("Color cannot be empty!");
-                }
-            }
-            catch (invalid_argument textExeception){
-                cout << textExeception.what();
-                setColor();
-            }
-        }
-        void StereoReceiver :: setManufacturer(){
-            int input;
-            cout << "Enter manufacturer:\n"
-                    "1. Samsung\n"
-                    "2. Vizio\n"
-                    "3. Yamaha\n"
-                    "4. Other\n";
-            cin >> input;
-            try{
-                if(!cin.good()){
-                    throw invalid_argument("Input must be integer ");
-                }
-                if(input < 1 || input > 4){
-                    throw invalid_argument("Input must be between 1 and 4");
-                }
-            }
-            catch (invalid_argument textExpression){
-                cout << textExpression.what() << endl;
+void StereoReceiver::setBand(){
+    int input;
+    cout << "Input the band you would like to listen to (1 for AM/2 for FM) :";
+    cin >> input;
+    try{
+        if(!cin.good()){
+            cin.clear();
+            cin.ignore(1000,'\n');
+            throw invalid_argument("Input must be 1 or 2!");}
+        if(input < 1 || input > 2){invalid_argument("Input must be 1 or 2");}
+        if(input==1){Band="AM";}
+        if(input==1){Band="FM";}
+    }
+    catch(invalid_argument textException){
+        cout << textException.what();
+        setBand();
+    }
+}
+
+void StereoReceiver::setChannel() {
+    int input;
+    cout << "How many channels does the " << Manufacturer << " " << Model << " support (1-20) : ";
+    cin >> input;
+    try{
+        if(!cin.good()){throw invalid_argument("Input must be an integer");}
+        if(input > 20 || input < 1){throw invalid_argument("Input must be between 1-20\n");}
+    }
+    catch (invalid_argument textException){
+        cout << textException.what();
+        setChannel();
+    }
+}
+
+void StereoReceiver :: setColor(){
+    string input;
+    cout << "Enter color: ";
+    cin >> input;
+    try{
+        if(input == ""){throw invalid_argument("Input cannot be blank\n");}
+        if(input !=""){Color=input;}
+    }
+    catch(invalid_argument textException){
+        cout << textException.what();
+        setColor();
+    }
+}
+
+void StereoReceiver::setFrequency() { //there had to be a better way to do this
+    if (Band.compare("FM") == 0) {
+        float input;
+        cout << "Enter frequency between 88.0 and 108.0 :";
+        cin >> input;
+        try {
+            if (!cin.good()) {
                 cin.clear();
-                cin.ignore(1000,'\n');
-                setManufacturer();
+                cin.ignore(1000, '\n');
+                throw invalid_argument("Invalid input");
             }
+            if (input < 88 || input > 108) { throw invalid_argument("Invalid input\n"); }
+            Frequency = input;
+        }
+        catch (invalid_argument textException) {
+            cout << textException.what();
+            setFrequency();
+        }
+    }
+    if (Band.compare("AM") == 0) {
+        float input;
+        cout << "Enter frequency between 540 and 1700 :";
+        cin >> input;
+        try {
+            if (!cin.good()) {
+                cin.clear();
+                cin.ignore(1000, '\n');
+                throw invalid_argument("Invalid input\n");
+            }
+            if (input < 540 || input > 1700) { throw invalid_argument("Invalid input"); }
+            Frequency = input;
+        }
+        catch (invalid_argument textException) {
+            cout << textException.what();
+            setFrequency();
+        }
+    }
+}
 
-            switch(input){
-                case 1: Manufacturer="Samsung";
-                break;
-                case 2: Manufacturer="Vizio";
-                break;
-                case 3: Manufacturer="Yamaha";
-                break;
-                case 4: cout << "Enter name of manufacturer: ";
-                        cin >> Manufacturer;
-                break;
-            }
+void StereoReceiver::setManufacturer(){
+    int input;
+    cout << "Select Manufacturer:\n 1. Samsung\n 2. Vizio\n 3. Sony\n 4. Other\n";
+    cin >> input;
+    try{
+        if(!cin.good()){
+            cin.clear();
+            cin.ignore(1000,'\n');
+            throw invalid_argument("Invalid input\n");
         }
-        void StereoReceiver :: setModel(){
-            string input;
-            cout << "Enter model number of your " << Manufacturer << " Stereo Receiver: ";
-            cin >> input;
-            try{
-                if(input.compare("") == 0){
-                    throw invalid_argument("Model number cannot be empty!");
-                }
-                input = Model;
-            }
-            catch (invalid_argument textException){
-                cout << textException.what();
-                setModel();}
+        if(input < 1 || input >4){throw invalid_argument("Input must be between 1 and 4\n");}
+        switch(input){
+            case 1: Manufacturer = "Samsung";
+            break;
+            case 2: Manufacturer = "Vizio";
+            break;
+            case 3: Manufacturer = "Sony";
+            break;
+            case 4: cout << "Enter name of Manufacturer: ";
+            cin >> Manufacturer;
+            break;
         }
-       void StereoReceiver::setSerialNumber() {
-            string input;
-            cout << "Enter the Serial Number for your " << Manufacturer << " " << Model << " : ";
-            cin >> input;
-            try{
-                if(input.compare("") == 0){
-                    throw invalid_argument("Serial Number cannot be empty"); }
-            }
-            catch (invalid_argument textException){
-                cout << textException.what();
-                setSerialNumber(); }
-           }
-        //default constructor
-        StereoReceiver::StereoReceiver() {
-            Manufacturer="";
-            Model = "";
-            SerialNumber = "";
-            Wattage = 0;
-            Channel = 0;
-            Color = "";
-            Power = false;
-            Band = "";
-            Frequency = 0;
+    }
+    catch(invalid_argument textException){
+        cout << textException.what();
+        setManufacturer();
+    }
+}
 
+void StereoReceiver::setModel(){
+    string input;
+    int confirm;
+    cout << "Enter " << Manufacturer <<  " model number: ";
+    cin >> input;
+    try{
+        if(input == ""){throw invalid_argument("Input cannot be blank\n");}
+        cout << "Confirm Model Number! 1 for correct, 2 for incorrect. Model Number: " << input <<endl;
+        cin >> confirm;
+        if(!cin.good()){
+            cin.clear();
+            cin.ignore(1000,'\n');
+            throw invalid_argument("Invalid input\n");
         }
+        if(confirm < 1 || confirm > 2){throw invalid_argument("Input must be 1 or 2");}
+        if(confirm == 1){Model=input;}
+        if(confirm == 2){setModel();}
+    }
+    catch(invalid_argument textException){
+        cout << textException.what();
+        setModel();
+    }
+}
+
+void StereoReceiver::setPower(){
+    int input;
+    cout << "1 to power on. 0 to power off: ";
+    cin >> input;
+    try{
+        if(!cin.good()){
+            cin.clear();
+            cin.ignore(1000,'\n');
+            throw invalid_argument("Input must be 1 or 0\n");
+        }
+        if(input > 1 || input < 0){throw invalid_argument("Input must be 1 or 0\n");}
+        if(input == 1){Power = true;}
+        if(input == 0){Power = false;}
+    }
+    catch (invalid_argument textException){
+        cout << textException.what();
+        setPower();
+    }
+}
+
+void StereoReceiver::setSerialNumber(){
+    string input;
+    int confirm;
+    cout << "Enter " << Manufacturer << " "<< Model<< " Serial Number: ";
+    cin >> input;
+    try{
+        if(input == ""){throw invalid_argument("Input cannot be blank\n");}
+        cout << "Confirm Serial Number! 1 for correct, 2 for incorrect. Serial Number: " << input <<endl;
+        cin >> confirm;
+        if(!cin.good()){
+            cin.clear();
+            cin.ignore(1000,'\n');
+            throw invalid_argument("Invalid input\n");
+        }
+        if(confirm < 1 || confirm > 2){throw invalid_argument("Input must be 1 or 2");}
+        if(confirm == 1){SerialNumber=input;}
+        if(confirm == 2){setModel();}
+    }
+    catch(invalid_argument textException){
+        cout << textException.what();
+        setSerialNumber();
+    }
+}
+
+void StereoReceiver::setVolume(){
+    float input;
+    cout << "Enter volume between 0-10: ";
+    cin >> input;
+    try{
+        if(!cin.good()){
+            cin.clear();
+            cin.ignore(1000,'\n');
+            throw invalid_argument("Invalid input!\n");
+        }
+        if(input<0 || input > 10){throw invalid_argument("Input must be between 0-10\n");}
+        Volume = input;
+    }
+    catch(invalid_argument textException){
+        cout << textException.what();
+        setVolume();
+    }
+}
+
+void StereoReceiver::setWattage(){
+    double input;
+    cout << "Enter wattage between 1 and 1000 : ";
+    cin >> input;
+    try{
+        if(!cin.good()){
+            cin.clear();
+            cin.ignore(1000,'\n');
+            throw invalid_argument("Invalid input!\n");
+        }
+        if(input < 1 || input > 1000){throw invalid_argument("Input must be between 1-1000\n");}
+        if(input >= 1 || input <=1000){Wattage=input;}
+    }
+    catch(invalid_argument textException){
+        cout << textException.what();
+        setWattage();
+    }
+}
+
+//constructor
+StereoReceiver::StereoReceiver() {
+    Manufacturer ="";
+    Model="";
+    SerialNumber = "";
+    Band = "AM";
+    Frequency = 540;
+    Channel = 20;
+    Wattage = 100;
+    Power = false;
+    Volume = 0;
+    Color = "black";
+}
 
 
 
