@@ -2,7 +2,7 @@
 Author: David Bommarito
 Program Name: Source.cpp
 Purpose:  To create a Stereo Receiver object and allow the object to modified using appropriate methods
-Last Updated: 9/15/2022
+Last Updated: 9/17/2022
  */
 
 #include <iostream>
@@ -19,7 +19,6 @@ int input;
 int main() {
 
     StereoReceiver myReceiver;
-    cout << myReceiver.getVolume();
     getStereoSettings(myReceiver);
     settingsInterface();
     changeSettings(myReceiver);
